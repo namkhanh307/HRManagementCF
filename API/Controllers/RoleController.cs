@@ -49,6 +49,7 @@ namespace API.Controllers
         }
 
         [HttpPost("addRole")]
+        [Authorize(Policy = "ApiAccess:addRole")]
         public async Task<IActionResult> CreateRole([FromBody] string roleName)
         {
             if (string.IsNullOrWhiteSpace(roleName))

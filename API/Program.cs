@@ -1,8 +1,10 @@
 using API.DTO;
+using API.Helpers;
 using API.Models;
 using API.Repositories;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -57,6 +59,7 @@ namespace API
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddSingleton<IAuthorizationHandler, ApiAuthorizationHandler>();
 
             builder.Services.AddIdentity<CustomUser, IdentityRole>().AddEntityFrameworkStores<HRMDbContext>().AddDefaultTokenProviders();
 
@@ -88,10 +91,13 @@ namespace API
             });
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
-                options.AddPolicy("RequireHRRole", policy => policy.RequireRole("HR"));
+                // Dynamically define policies for each API endpoint
+                foreach (var apiName in ApiHelper.GetApiNames())
+                {
+                    options.AddPolicy($"ApiAccess:{apiName}", policy => policy.Requirements.Add(new ApiRequirement(apiName)));
+                }
             });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

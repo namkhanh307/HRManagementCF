@@ -8,9 +8,9 @@ namespace API.Services
 {
     public interface ITokenService
     {
-        string Hash(string password);
+        //string Hash(string password);
 
-        bool Verify(string hassPassword, string inputPassword);
+        //bool Verify(string hassPassword, string inputPassword);
 
         string GenerateJwtToken(CustomUser user);
 

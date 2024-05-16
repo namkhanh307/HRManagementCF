@@ -66,6 +66,10 @@ namespace API.Controllers
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
+                var userClaims = await _userManager.GetClaimsAsync(user);
+
+                // Add user claims to the list of claims
+                authClaims.AddRange(userClaims);
                 var userRole = await _userManager.GetRolesAsync(user);
                 foreach (var role in userRole)
                 {

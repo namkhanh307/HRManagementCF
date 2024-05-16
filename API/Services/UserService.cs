@@ -78,11 +78,10 @@ namespace API.Services
             {
                 UserName = user.Username,
                 Email = user.Email,
-                PasswordHash = _tokenService.Hash(user.Password)
             };
             if(await _roleManager.RoleExistsAsync(role))
             {
-                var result = await _userManager.CreateAsync(customUser);
+                var result = await _userManager.CreateAsync(customUser, user.Password);
                 if(!result.Succeeded)
                 {
                     return false;
