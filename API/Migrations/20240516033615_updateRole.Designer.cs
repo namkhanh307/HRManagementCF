@@ -4,6 +4,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(HRMDbContext))]
-    partial class HRMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240516033615_updateRole")]
+    partial class updateRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,66 +125,52 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca0b5829-c6fd-4adb-907e-732228192990",
-                            ConcurrencyStamp = "dd12a0c6-458a-4122-9820-9179034dbcb1",
+                            Id = "dd3229dc-824e-4df9-96a4-ac4f750039f8",
+                            ConcurrencyStamp = "df6ef1ff-6365-4ce2-aa2f-f70ef144120e",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "83434f1e-0b52-409b-a1da-7653d25e1aa7",
-                            ConcurrencyStamp = "353defb1-0d1d-4645-b3d6-0d270dc2254c",
+                            Id = "8e3e2de7-97d5-4a6d-9416-3536926bb684",
+                            ConcurrencyStamp = "4292ffbf-35d6-4fb5-ab26-3e858542941c",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "3844899d-e684-44ea-91cd-7d31f22cbca5",
-                            ConcurrencyStamp = "e2149212-8d1e-420b-a8d6-83c76aeff3a1",
+                            Id = "fdd7f0cf-83ea-4352-8b67-97e489418346",
+                            ConcurrencyStamp = "b0df0c10-9152-4e75-8943-59d9662aad5e",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "62c12858-c816-4b4c-96a4-767dc4c95696",
-                            ConcurrencyStamp = "3ccbd39f-4f7e-4f17-9aa3-64f86dda351b",
+                            Id = "2f7b46e2-2538-4a78-8b62-2680ff40e342",
+                            ConcurrencyStamp = "157512a1-5f81-4e2c-8b59-461243bd6f42",
                             Name = "Accountant",
                             NormalizedName = "ACCOUNTANT"
                         },
                         new
                         {
-                            Id = "95a36479-8141-4504-bf5a-1200e761bbdc",
-                            ConcurrencyStamp = "0ba7c8a5-71e8-4d29-833a-b983524aea0d",
+                            Id = "286f7c12-4b50-4883-9eef-f3de6451a5e3",
+                            ConcurrencyStamp = "7ff34e11-db65-4850-a489-df2de1cf70ce",
                             Name = "Human Resource",
                             NormalizedName = "HUMAN RESOURCE"
                         },
                         new
                         {
-                            Id = "416b664c-c28d-4b8e-ae04-4f56067f0816",
-                            ConcurrencyStamp = "cd291273-6f62-4710-80a5-63b788111941",
+                            Id = "b91147c9-2a8f-4c12-aaf6-6de98fc6bf86",
+                            ConcurrencyStamp = "8c6a29e2-4ff8-452c-94cd-53103285cf52",
                             Name = "Warehouse staff",
                             NormalizedName = "WAREHOUSE STAFF"
                         },
                         new
                         {
-                            Id = "183dbae6-98f8-4229-8131-2c5a6c2b5b17",
-                            ConcurrencyStamp = "56257fcc-edb5-4b41-9b15-36c24305067d",
-                            Name = "Business Manager",
-                            NormalizedName = "BUSINESS MANAGER"
-                        },
-                        new
-                        {
-                            Id = "392483a7-a43f-487d-8e60-8a943763c955",
-                            ConcurrencyStamp = "9aab6b70-cfe6-406e-8638-8bd6b286e9c3",
-                            Name = "Data Analyst",
-                            NormalizedName = "DATA ANALYST"
-                        },
-                        new
-                        {
-                            Id = "0de3d1d8-a096-43a5-85ce-398c3086c792",
-                            ConcurrencyStamp = "28fd69ac-bc5b-47b7-9be1-a01e170fd26d",
-                            Name = "D E",
-                            NormalizedName = "D E"
+                            Id = "1ede734f-3d1c-40c6-9dc3-293a70d139a1",
+                            ConcurrencyStamp = "aafa273f-afc1-4774-9d8f-78560851efea",
+                            Name = "Khanh",
+                            NormalizedName = "KHANH"
                         });
                 });
 
