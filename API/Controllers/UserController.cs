@@ -11,6 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR)]
     public class UserController : ControllerBase
     {
         private readonly ILogger <UserController> _logger;
@@ -24,65 +25,6 @@ namespace API.Controllers
             _userService = userService;
             _userManager = userManager;
             _tokenService = tokenService;
-        }
-
-        [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
-        {
-            try
-            {
-                var user = await _userService.SignUp(signUpDTO);
-                return Ok(new { message = "Registration successful", userId = user.Id });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
-        {
-            try
-            {
-                var token = await _userService.SignIn(signInDTO);
-                return Ok(new { message = "Sign-in successful", token });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpPost("signInAuth")]
-        [AllowAnonymous]
-        public async Task<IActionResult> SignInAuth([FromBody] SignInDTO signInDTO)
-        {
-            var user = await _userManager.FindByNameAsync(signInDTO.Username);
-            if(user != null && await _userManager.CheckPasswordAsync(user, signInDTO.Password))
-            {
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
-                var userClaims = await _userManager.GetClaimsAsync(user);
-
-                // Add user claims to the list of claims
-                authClaims.AddRange(userClaims);
-                var userRole = await _userManager.GetRolesAsync(user);
-                foreach (var role in userRole)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role));
-                }
-                var token = _tokenService.GetToken(authClaims);
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
-            }
-            return Unauthorized();
         }
 
         [HttpGet("getAllUser")]
@@ -101,7 +43,6 @@ namespace API.Controllers
         }
 
         [HttpPost("addUser")]
-        //[Authorize]
         public async Task<IActionResult> AddUser([FromBody] SignUpDTO customUser, string role)
         {
             var user = await _userService.AddUser(customUser, role);
@@ -114,5 +55,38 @@ namespace API.Controllers
                 return Ok("User create successfully");
             }
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _userService.DeleteUser(id);
+            if (result)
+            {
+                return Ok(new { message = "User deleted successfully." });
+            }
+            return NotFound(new { message = "User not found." });
+        }
+
+        [HttpGet("username/{name}")]
+        public async Task<IActionResult> GetUserByUserName(string name)
+        {
+            var result = await _userService.GetUserByUserName(name);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound(new { message = "User not found." });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(CustomUser entity)
+        {
+            var result = await _userService.UpdateUser(entity);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest(new { message = "Update failed." });
+        }
+
     }
 }

@@ -8,7 +8,7 @@ namespace API.Services
     {
         Task<List<CustomUser>> GetAllUser();
 
-        Task<CustomUser> GetUserByID(string id);
+        Task<CustomUser> GetUserByUserName(string username);
 
         Task<bool> AddUser(SignUpDTO entity, string role);
 
@@ -16,8 +16,8 @@ namespace API.Services
 
         Task<bool> DeleteUser(string id);
 
-        Task<CustomUser> SignUp(SignUpDTO signUpDTO);
-        Task<string> SignIn(SignInDTO signInDTO);
+        //Task<CustomUser> SignUp(SignUpDTO signUpDTO);
+        //Task<string> SignIn(SignInDTO signInDTO);
 
         Task<bool> ModifyRole(string username, string role);
     }

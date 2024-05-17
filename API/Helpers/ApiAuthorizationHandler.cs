@@ -6,7 +6,6 @@ namespace API.Helpers
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ApiRequirement requirement)
         {
-            // Check if the user has the required claim
             if (context.User.HasClaim(c => c.Type == "api" && c.Value == requirement.ApiName))
             {
                 context.Succeed(requirement);

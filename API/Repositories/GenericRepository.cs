@@ -98,7 +98,7 @@ namespace API.Repositories
             return false;
         }
 
-        public async Task<CustomUser> GetEntityByUsername(string username)
+        public async Task<CustomUser> GetEntityByName(string username)
         {
             return await _context.Set<CustomUser>()
                                  .FirstOrDefaultAsync(user => user.UserName == username);

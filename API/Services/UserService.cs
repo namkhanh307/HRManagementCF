@@ -23,55 +23,57 @@ namespace API.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<CustomUser> SignUp(SignUpDTO signUpDTO)
-        {
-            if (await _userManager.Users.AnyAsync(m => m.UserName == signUpDTO.Username))
-            {
-                throw new Exception("User name is already exist!");
-            }
+        //public async Task<CustomUser> SignUp(SignUpDTO signUpDTO)
+        //{
+        //    if (await _userManager.Users.AnyAsync(m => m.UserName == signUpDTO.Username))
+        //    {
+        //        throw new Exception("User name is already exist!");
+        //    }
 
-            var user = new CustomUser
-            {
-                UserName = signUpDTO.Username,
-                Email = signUpDTO.Email,
-                FirstName = signUpDTO.Name,
-            };
+        //    var user = new CustomUser
+        //    {
+        //        UserName = signUpDTO.Username,
+        //        Email = signUpDTO.Email,
+        //        FirstName = signUpDTO.Name,
+        //    };
 
-            var result = await _userManager.CreateAsync(user, signUpDTO.Password);
+        //    var result = await _userManager.CreateAsync(user, signUpDTO.Password);
 
-            if (result.Succeeded)
-            {
-                await _unitOfWork.CompleteAsync();
-                return user;
-            }
-            else
-            {
-                result.Errors.ToList().ForEach(e =>
-                {
-                    throw new Exception(e.Description);
-                });
+        //    if (result.Succeeded)
+        //    {
+        //        await _unitOfWork.CompleteAsync();
+        //        return user;
+        //    }
+        //    else
+        //    {
+        //        result.Errors.ToList().ForEach(e =>
+        //        {
+        //            throw new Exception(e.Description);
+        //        });
 
-                return null;
-            }
-        }
-        public async Task<string> SignIn(SignInDTO signInDTO)
-        {
-            var user = await _userManager.FindByNameAsync(signInDTO.Username);
+        //        return null;
+        //    }
+        //}
 
-            if (user == null) {
-                throw new Exception("User does not exist");
-            }
-            else
-            {
-                var result = await _userManager.CheckPasswordAsync(user, signInDTO.Password);
-                if (result)
-                {
-                    await _unitOfWork.CompleteAsync();
-                    return _tokenService.GenerateJwtToken(user);
-                }
-                return null;
-            }
-        }
+        //public async Task<string> SignIn(SignInDTO signInDTO)
+        //{
+        //    var user = await _userManager.FindByNameAsync(signInDTO.Username);
+
+        //    if (user == null) {
+        //        throw new Exception("User does not exist");
+        //    }
+        //    else
+        //    {
+        //        var result = await _userManager.CheckPasswordAsync(user, signInDTO.Password);
+        //        if (result)
+        //        {
+        //            await _unitOfWork.CompleteAsync();
+        //            return _tokenService.GenerateJwtToken(user);
+        //        }
+        //        return null;
+        //    }
+        //}
+
         public async Task<bool> AddUser(SignUpDTO user, string role)
         {
             CustomUser customUser = new()
@@ -110,9 +112,9 @@ namespace API.Services
             return result;
         }
 
-        public Task<CustomUser> GetUserByID(string id)
+        public Task<CustomUser> GetUserByUserName(string name)
         {
-            var result = _unitOfWork.Users.GetEntityByID(id);
+            var result = _unitOfWork.Users.GetEntityByName(name);
             _unitOfWork.CompleteAsync();
             return result;
         }
@@ -127,7 +129,7 @@ namespace API.Services
         public async Task<bool> ModifyRole(string username, string role)
         {
             var existRole = await _roleManager.FindByNameAsync(role);
-            var existUsername = await _unitOfWork.Users.GetEntityByUsername(username);
+            var existUsername = await _unitOfWork.Users.GetEntityByName(username);
             if(existRole == null || existUsername == null) {
                 return false;
             }

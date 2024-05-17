@@ -18,6 +18,6 @@ namespace API.Repositories
 
         Task<bool> DeleteEntity(string id);
 
-        Task<CustomUser> GetEntityByUsername(string username);
+        Task<CustomUser> GetEntityByName(string username);
     }
 }
