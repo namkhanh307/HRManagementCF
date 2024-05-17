@@ -30,15 +30,15 @@ namespace API.Controllers
             _userService = userService;
         }
 
-        [HttpGet("getAllRole")]
-        public ActionResult GetAllRole()
+        [HttpGet("getAllRoles")]
+        public ActionResult GetAllRoles()
         {
             var roles = _roleManager.Roles.ToList();
             return Ok(roles);
         }
 
-        [HttpPut("modifyRole")]
-        public async Task<ActionResult> ModifyRole([FromBody] string username, string roleName)
+        [HttpPut("updateRole")]
+        public async Task<ActionResult> UpdateRole([FromBody] string username, string roleName)
         {
             //var result = await _userService.ModifyRole(username, roleName);
 

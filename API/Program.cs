@@ -62,6 +62,8 @@ namespace API
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddSingleton<IAuthorizationHandler, ApiAuthorizationHandler>();
             builder.Services.AddScoped<IFormService, FormService>();
+            builder.Services.AddScoped<ISalaryService, SalaryService>();
+
 
             builder.Services.AddIdentity<CustomUser, IdentityRole>().AddEntityFrameworkStores<HRMDbContext>().AddDefaultTokenProviders();
 

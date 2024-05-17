@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR)]
+    [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR)]
     public class UserController : ControllerBase
     {
         private readonly ILogger <UserController> _logger;
@@ -27,8 +27,8 @@ namespace API.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet("getAllUser")]
-        public async Task<ActionResult<CustomUser>> GetAllUser()
+        [HttpGet("getAllUsers")]
+        public async Task<ActionResult<CustomUser>> GetAllUsers()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace API.Controllers
                 return Ok("User create successfully");
             }
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteUser")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var result = await _userService.DeleteUser(id);
@@ -66,7 +66,7 @@ namespace API.Controllers
             return NotFound(new { message = "User not found." });
         }
 
-        [HttpGet("username/{name}")]
+        [HttpGet("getUserByUserName")]
         public async Task<IActionResult> GetUserByUserName(string name)
         {
             var result = await _userService.GetUserByUserName(name);
@@ -77,7 +77,7 @@ namespace API.Controllers
             return NotFound(new { message = "User not found." });
         }
 
-        [HttpPut]
+        [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser(CustomUser entity)
         {
             var result = await _userService.UpdateUser(entity);

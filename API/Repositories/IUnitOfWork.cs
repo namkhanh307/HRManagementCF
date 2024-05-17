@@ -8,6 +8,8 @@ namespace API.Repositories
         //IGenericRepository<T, Y> GetGenericRepository<T, Y>() where T : class where Y : class;
         IGenericRepository<CustomUser> Users { get; }
         IGenericRepository<FormDTO> FormDTOs { get; }
+        IGenericRepository<SalaryDTO> Salaries { get; }
+
 
         Task CompleteAsync();
     }       

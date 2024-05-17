@@ -19,7 +19,8 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllClaims")]
-        public async Task<IActionResult> GetAllClaim(string username, string claimType)
+        [Authorize(Policy = "ApiAccess:getAllClaims")]
+        public async Task<IActionResult> GetAllClaims(string username, string claimType)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(claimType))
             {
@@ -45,6 +46,7 @@ namespace API.Controllers
 
 
         [HttpPost("addClaim")]
+        [Authorize(Policy = "ApiAccess:addClaim")]
         public async Task<IActionResult> AddClaim(ClaimDTO claimDTO)
         {
             var user = await _userManager.FindByIdAsync(claimDTO.UserId);
@@ -64,8 +66,9 @@ namespace API.Controllers
             return Ok("Claim added successfully");
         }
 
-        [HttpPut("modifyClaim")]
-        public async Task<IActionResult> ModifyClaim(ClaimDTO claimDTO)
+        [HttpPut("updateClaim")]
+        [Authorize(Policy = "ApiAccess:updateClaim")]
+        public async Task<IActionResult> UpdateClaim(ClaimDTO claimDTO)
         {
             var user = await _userManager.FindByIdAsync(claimDTO.UserId);
             if (user == null)
@@ -90,6 +93,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("deleteClaim")]
+        [Authorize(Policy = "ApiAccess:deleteClaim")]
         public async Task<IActionResult> DeleteClaim(ClaimDTO claimDTO)
         {
             var user = await _userManager.FindByIdAsync(claimDTO.UserId);

@@ -128,10 +128,26 @@ namespace API.Repositories
                 Title = f.Title,
                 Reason = f.Reason,
                 Description = f.Description,
-                CreatedDate = f.CreatedDate,
+                CreatedDate = (DateTime)f.CreatedDate,
                 FilePath = f.FilePath,
                 FormTypeId = f.FormTypeId,
                 UserId = f.UserId
+            }).ToList();
+        }
+
+        public Task<SalaryDTO?> GetSalaryByUser(string userId)
+        {
+            return (Task<SalaryDTO?>)_context.Salaries.Where(s => s.UserId == userId);
+        }
+
+        public async Task<List<SalaryDTO>> GetAllSalariesAsync()
+        {
+            var salaries = await _context.Salaries.ToListAsync();
+            return salaries.Select(s => new SalaryDTO
+            {
+                Id = s.Id,
+                FixedAmount = s.FixedAmount,
+                UserId = s.UserId
             }).ToList();
         }
 

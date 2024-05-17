@@ -6,11 +6,34 @@ namespace API.ApiHelpers
         public static List<string> GetApiNames()
         {
             return new List<string>
-        {
-            ApiNames.AddRole,
-            ApiNames.DeleteUser,
-            // Add more API names as needed
-        };
+            {
+                //claimController
+                "getAllClaims",
+                "addClaim",
+                "updateClaim",
+                "deleteClaim",
+                //formController
+                "getUserForms",
+                "submitForm",
+                //registrationController
+                "signInAuth",
+                //roleController
+                "getAllRoles",
+                "addRole",
+                "updateRole",
+                //salaryController
+                "getAllSalaries",
+                "getSalaryByUserId",
+                "addSalary",
+                "updateSalary",
+                "deleteSalary",
+                //userController
+                "getAllUsers",
+                "getUserByUserName",
+                "addUser",
+                "updateUser",
+                "deleteUser",
+            };
         }
     }
 

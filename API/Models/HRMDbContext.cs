@@ -37,9 +37,9 @@ namespace API.Models
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Salary>()
-                .Property(s => s.FixedAmount)
-                .HasColumnType("decimal(18, 2)");
+            //modelBuilder.Entity<Salary>()
+            //    .Property(s => s.FixedAmount)
+            //    .HasColumnType("decimal(18, 2)");
         }
     }
 }
