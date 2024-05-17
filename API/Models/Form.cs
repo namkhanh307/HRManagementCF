@@ -6,18 +6,13 @@ namespace API.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-
         public string Reason { get; set; }
-
         public string Description { get; set; }
-
         public DateTime CreatedDate { get; set; }
-
-        public string Image { get; set; }
-
-        public int FormTypeId { get; set; }
-        public string UserId { get; set; }
-        public CustomUser CustomUser { get; set; }
-        public FormType FormType { get; set; } // Navigation property
+        public string FilePath { get; set; }
+        public int? FormTypeId { get; set; }
+        public string? UserId { get; set; }
+        public CustomUser? CustomUser { get; set; }
+        public FormType? FormType { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(HRMDbContext))]
-    partial class HRMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240517121700_update15")]
+    partial class update15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,6 +107,9 @@ namespace API.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CustomUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -123,16 +129,13 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomUserId");
 
                     b.HasIndex("FormTypeId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Forms");
+                    b.ToTable("Form");
                 });
 
             modelBuilder.Entity("API.Models.FormType", b =>
@@ -143,7 +146,7 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DayQuantity")
+                    b.Property<int>("DayQuatity")
                         .HasColumnType("int");
 
                     b.Property<string>("TypeDescription")
@@ -156,7 +159,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FormTypes");
+                    b.ToTable("FormType");
                 });
 
             modelBuilder.Entity("API.Models.Salary", b =>
@@ -178,7 +181,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Salaries");
+                    b.ToTable("Salary");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -316,14 +319,13 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Form", b =>
                 {
+                    b.HasOne("API.DTO.CustomUser", "CustomUser")
+                        .WithMany("Forms")
+                        .HasForeignKey("CustomUserId");
+
                     b.HasOne("API.Models.FormType", "FormType")
                         .WithMany("Forms")
                         .HasForeignKey("FormTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("API.DTO.CustomUser", "CustomUser")
-                        .WithMany("Forms")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CustomUser");
