@@ -1,4 +1,5 @@
 ﻿using API.DTO;
+using API.Models;
 
 namespace API.Repositories
 {
@@ -6,7 +7,8 @@ namespace API.Repositories
     {
         //IGenericRepository<T, Y> GetGenericRepository<T, Y>() where T : class where Y : class;
         IGenericRepository<CustomUser> Users { get; }
-        //ITokenService Tokens { get; }
+        IGenericRepository<Form> Forms { get; }
+
         Task CompleteAsync();
     }       
 }

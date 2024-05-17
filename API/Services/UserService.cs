@@ -126,19 +126,19 @@ namespace API.Services
             return result;
         }
 
-        public async Task<bool> ModifyRole(string username, string role)
-        {
-            var existRole = await _roleManager.FindByNameAsync(role);
-            var existUsername = await _unitOfWork.Users.GetEntityByName(username);
-            if(existRole == null || existUsername == null) {
-                return false;
-            }
-            else
-            {
-                await _userManager.AddToRoleAsync(existUsername, role);
-                await _unitOfWork.CompleteAsync();
-                return true;
-            }
-        }
+        //public async Task<bool> ModifyRole(string username, string role)
+        //{
+        //    var existRole = await _roleManager.FindByNameAsync(role);
+        //    var existUsername = await _unitOfWork.Users.GetEntityByName(username);
+        //    if(existRole == null || existUsername == null) {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        await _userManager.AddToRoleAsync(existUsername, role);
+        //        await _unitOfWork.CompleteAsync();
+        //        return true;
+        //    }
+        //}
     }
 }

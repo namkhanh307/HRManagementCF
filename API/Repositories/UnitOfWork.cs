@@ -1,5 +1,6 @@
 ﻿using API.DTO;
 using API.Models;
+using Microsoft.SqlServer.Server;
 
 namespace API.Repositories
 {
@@ -11,11 +12,12 @@ namespace API.Repositories
         {
             _context = context;
             Users = new GenericRepository<CustomUser>(_context);
-            //Tokens = new TokenRepository(_context);
+            Forms = new GenericRepository<Form>(_context);
         }
 
         public IGenericRepository<CustomUser> Users { get; private set; }
-        //public ITokenService Tokens { get; private set; }
+
+        public IGenericRepository<Form> Forms { get; private set; }
 
         public async Task CompleteAsync()
         {

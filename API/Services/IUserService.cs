@@ -19,6 +19,6 @@ namespace API.Services
         //Task<CustomUser> SignUp(SignUpDTO signUpDTO);
         //Task<string> SignIn(SignInDTO signInDTO);
 
-        Task<bool> ModifyRole(string username, string role);
+        //Task<bool> ModifyRole(string username, string role);
     }
 }

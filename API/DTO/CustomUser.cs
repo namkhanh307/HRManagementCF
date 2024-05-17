@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using API.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.DTO
 {
@@ -7,5 +8,9 @@ namespace API.DTO
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
+
+        public virtual ICollection<Form> Forms { get; set; } = new List<Form>();
+
+        public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>(); 
     }
 }

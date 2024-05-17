@@ -3,15 +3,15 @@ using API.Helpers;
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = LocalRoles.Admin)]
+    //[Authorize(Roles = LocalRoles.Admin)]
     public class RoleController : ControllerBase
     {
         private readonly HRMDbContext _context;
@@ -40,16 +40,29 @@ namespace API.Controllers
         [HttpPut("modifyRole")]
         public async Task<ActionResult> ModifyRole([FromBody] string username, string roleName)
         {
-            var result = await _userService.ModifyRole(username, roleName);
-            if(result)
+            //var result = await _userService.ModifyRole(username, roleName);
+
+            //if(result)
+            //{
+            //    return Ok("Modify role successfully");
+            //}
+            //return BadRequest("Username or rolename doesn't exist");
+
+            var existRole = await _roleManager.FindByNameAsync(roleName);
+            var existUsername = await _userService.GetUserByUserName(username);
+            if (existRole == null || existUsername == null)
             {
-                return Ok("Modify role successfully");
+                return BadRequest("Username or role doesn't exist!");
             }
-            return BadRequest("Username or rolename doesn't exist");
+            else
+            {
+                await _userManager.AddToRoleAsync(existUsername, roleName);
+                return Ok("Role modify succesfully");
+            }
         }
 
         [HttpPost("addRole")]
-        [Authorize(Policy = "ApiAccess:addRole")]
+        //[Authorize(Policy = "ApiAccess:addRole")]
         public async Task<IActionResult> CreateRole([FromBody] string roleName)
         {
             if (string.IsNullOrWhiteSpace(roleName))

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace API.Models
 {
@@ -16,27 +17,31 @@ namespace API.Models
        : base(options)
         {
         }
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            //this.SeedRoles(builder);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Form>()
+                .HasOne(f => f.FormType)
+                .WithMany(ft => ft.Forms)
+                .HasForeignKey(f => f.FormTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Salary>()
+                .HasOne(s => s.CustomUser)
+                .WithMany(u => u.Salaries)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FormType>()
+                .HasMany(ft => ft.Forms)
+                .WithOne(f => f.FormType)
+                .HasForeignKey(f => f.FormTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Salary>()
+        .Property(s => s.FixedAmount)
+        .HasColumnType("decimal(18, 2)"); //
         }
-
-        //private void SeedRoles(ModelBuilder builder)
-        //{
-        //    var roles = LocalRoles.GetAllRoles()
-        //        .Select(role => new IdentityRole
-        //        {
-        //            Name = role.Name,
-        //            NormalizedName = role.NormalizedName,
-        //            ConcurrencyStamp = role.ConcurrencyStamp,
-        //        })
-        //        .ToList();
-
-        //    foreach (var role in roles)
-        //    {
-        //        builder.Entity<IdentityRole>().HasData(new IdentityRole() { Id = role.Id, Name = role.Name, NormalizedName = role.NormalizedName, ConcurrencyStamp = role.ConcurrencyStamp });
-        //    }
-        //}
     }
+    
 }
