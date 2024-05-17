@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace API.Helpers
+namespace API.ApiHelpers
 {
     public class ApiRequirement : IAuthorizationRequirement
     {

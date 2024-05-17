@@ -1,4 +1,5 @@
 ﻿using API.DTO;
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,14 +22,14 @@ namespace API.Controllers
         }
 
         [HttpPost("submitForm")]
-        public async Task<IActionResult> SubmitForm([FromForm] FormDTO formDto)
+        public async Task<IActionResult> SubmitForm([FromForm] SubmitFormDTO submitformDto)
         {
-            if (formDto.FileUpload == null || formDto.FileUpload.Length == 0)
+            if (submitformDto.FileUpload == null || submitformDto.FileUpload.Length == 0)
             {
                 return BadRequest("File is required.");
             }
 
-            var result = await _formService.SubmitForm(formDto);
+            var result = await _formService.SubmitForm(submitformDto);
             if (result)
             {
                 return Ok("Form submitted successfully.");
@@ -37,6 +38,24 @@ namespace API.Controllers
             {
                 return StatusCode(500, "There was an error submitting the form.");
             }
+        }
+        [HttpGet("getUserForms")]
+        public async Task<IActionResult> GetUserForms(string userId, int formTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest("User ID is required");
+            }
+
+            var forms = await _formService.GetUserFormsAsyncService(userId, formTypeId);
+
+            if (forms == null || forms.Count == 0)
+            {
+                return NotFound("No forms found");
+            }
+
+            return Ok(forms);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.DTO;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.SqlServer.Server;
 
 namespace API.Repositories
 {
@@ -100,8 +101,39 @@ namespace API.Repositories
 
         public async Task<CustomUser> GetEntityByName(string username)
         {
-            return await _context.Set<CustomUser>()
-                                 .FirstOrDefaultAsync(user => user.UserName == username);
+            return await _context.Set<CustomUser>().FirstOrDefaultAsync(user => user.UserName == username);
         }
+
+        public async Task<List<FormDTO>> GetUserFormsAsync(string userId, int? formTypeId)
+        {
+            IQueryable<Form> query = _context.Forms
+                                               .Include(f => f.FormType)
+                                               .Include(f => f.CustomUser);
+
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                query = query.Where(f => f.UserId == userId);
+            }
+
+            if (formTypeId.HasValue)
+            {
+                query = query.Where(f => f.FormTypeId == formTypeId);
+            }
+
+            var forms = await query.ToListAsync();
+
+            return forms.Select(f => new FormDTO
+            {
+                //Id = f.Id,
+                Title = f.Title,
+                Reason = f.Reason,
+                Description = f.Description,
+                CreatedDate = f.CreatedDate,
+                FilePath = f.FilePath,
+                FormTypeId = f.FormTypeId,
+                UserId = f.UserId
+            }).ToList();
+        }
+
     }
 }

@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = LocalRoles.Admin)]
+    [Authorize(Roles = LocalRoles.Admin)]
     public class RoleController : ControllerBase
     {
         private readonly HRMDbContext _context;
@@ -62,7 +62,7 @@ namespace API.Controllers
         }
 
         [HttpPost("addRole")]
-        //[Authorize(Policy = "ApiAccess:addRole")]
+        [Authorize(Policy = "ApiAccess:addRole")]
         public async Task<IActionResult> CreateRole([FromBody] string roleName)
         {
             if (string.IsNullOrWhiteSpace(roleName))

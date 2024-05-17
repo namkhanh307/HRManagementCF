@@ -1,4 +1,5 @@
-﻿namespace API.Helpers
+﻿
+namespace API.ApiHelpers
 {
     public static class ApiHelper
     {

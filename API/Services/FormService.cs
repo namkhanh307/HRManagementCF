@@ -54,26 +54,35 @@ namespace API.Services
             }
         }
 
-        public async Task<bool> SubmitForm(FormDTO formDto)
+        public async Task<bool> SubmitForm(SubmitFormDTO submitformDto)
         {
-            var filePath = await UploadFile(formDto.FileUpload);
+            var filePath = await UploadFile(submitformDto.FileUpload);
 
             if (filePath.StartsWith("Upload failed"))
             {
                 return false;
             }
 
-            var form = new Form
+            var form = new FormDTO
             {
-                Title = formDto.Title,
-                Reason = formDto.Reason,
-                Description = formDto.Description,
+                Title = submitformDto.Title,
+                Reason = submitformDto.Reason,
+                Description = submitformDto.Description,
                 CreatedDate = DateTime.UtcNow,
                 FilePath = filePath,
+                UserId = submitformDto.UserId,
+                FormTypeId = submitformDto.FormTypeId,
             };
-            await _unitOfWork.Forms.AddEntity(form);
+            await _unitOfWork.FormDTOs.AddEntity(form);
             await _unitOfWork.CompleteAsync();
             return true;
+        }
+
+        public async Task<List<FormDTO>> GetUserFormsAsyncService(string userId, int? formTypeId)
+        {
+            var query = _unitOfWork.FormDTOs.GetUserFormsAsync(userId, formTypeId);
+            await _unitOfWork.CompleteAsync();
+            return await query;
         }
     }
 }

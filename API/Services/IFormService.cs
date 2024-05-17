@@ -1,4 +1,5 @@
 ﻿using API.DTO;
+using API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Services
@@ -7,7 +8,8 @@ namespace API.Services
     {
         Task<string> UploadFile(IFormFile file);
 
-        Task<bool> SubmitForm(FormDTO formDto);
+        Task<bool> SubmitForm(SubmitFormDTO formDto);
 
+        Task<List<FormDTO>> GetUserFormsAsyncService(string userId, int? formTypeId);
     }
 }

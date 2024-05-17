@@ -18,6 +18,31 @@ namespace API.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet("getAllClaims")]
+        public async Task<IActionResult> GetAllClaim(string username, string claimType)
+        {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(claimType))
+            {
+                return BadRequest("Username and claimType are required");
+            }
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var claims = await _userManager.GetClaimsAsync(user);
+            var filteredClaims = claims.Where(c => c.Type == claimType).ToList();
+
+            if (claims == null)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(filteredClaims);
+        }
+
 
         [HttpPost("addClaim")]
         public async Task<IActionResult> AddClaim(ClaimDTO claimDTO)
@@ -39,7 +64,7 @@ namespace API.Controllers
             return Ok("Claim added successfully");
         }
 
-        [HttpPost("modifyClaim")]
+        [HttpPut("modifyClaim")]
         public async Task<IActionResult> ModifyClaim(ClaimDTO claimDTO)
         {
             var user = await _userManager.FindByIdAsync(claimDTO.UserId);
@@ -64,7 +89,7 @@ namespace API.Controllers
             return Ok("Claim modified successfully");
         }
 
-        [HttpPost("deleteClaim")]
+        [HttpDelete("deleteClaim")]
         public async Task<IActionResult> DeleteClaim(ClaimDTO claimDTO)
         {
             var user = await _userManager.FindByIdAsync(claimDTO.UserId);

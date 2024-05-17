@@ -12,12 +12,14 @@ namespace API.Repositories
         {
             _context = context;
             Users = new GenericRepository<CustomUser>(_context);
-            Forms = new GenericRepository<Form>(_context);
+            FormDTOs = new GenericRepository<FormDTO>(_context);
+
         }
 
         public IGenericRepository<CustomUser> Users { get; private set; }
 
-        public IGenericRepository<Form> Forms { get; private set; }
+        public IGenericRepository<FormDTO> FormDTOs { get; private set; }
+
 
         public async Task CompleteAsync()
         {

@@ -1,4 +1,5 @@
 ﻿using API.DTO;
+using API.Models;
 
 namespace API.Repositories
 {
@@ -19,5 +20,7 @@ namespace API.Repositories
         Task<bool> DeleteEntity(string id);
 
         Task<CustomUser> GetEntityByName(string username);
+        Task<List<FormDTO>> GetUserFormsAsync(string userId, int? formTypeId);
+
     }
 }

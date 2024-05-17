@@ -48,7 +48,7 @@ namespace API.Controllers
             var user = await _userService.AddUser(customUser, role);
             if (!user)
             {
-                return BadRequest("User already exist or Role doesn't exist");
+                return BadRequest("User already exist or Role doesn't exist or invalid password");
             }
             else
             {

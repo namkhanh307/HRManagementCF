@@ -7,7 +7,7 @@ namespace API.Repositories
     {
         //IGenericRepository<T, Y> GetGenericRepository<T, Y>() where T : class where Y : class;
         IGenericRepository<CustomUser> Users { get; }
-        IGenericRepository<Form> Forms { get; }
+        IGenericRepository<FormDTO> FormDTOs { get; }
 
         Task CompleteAsync();
     }       
