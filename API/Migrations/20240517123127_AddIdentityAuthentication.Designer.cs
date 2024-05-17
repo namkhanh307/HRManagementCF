@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(HRMDbContext))]
-    [Migration("20240516075112_updat5")]
-    partial class updat5
+    [Migration("20240517123127_AddIdentityAuthentication")]
+    partial class AddIdentityAuthentication
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,6 +96,94 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("API.Models.Form", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FormTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FormTypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Forms");
+                });
+
+            modelBuilder.Entity("API.Models.FormType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DayQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormTypes");
+                });
+
+            modelBuilder.Entity("API.Models.Salary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("FixedAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Salaries");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -121,71 +209,6 @@ namespace API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "f91e8084-874d-4ac1-ac4c-e3e1313adced",
-                            ConcurrencyStamp = "bf6808c5-a9c6-414b-86d2-e463ba832648",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "1a3041c8-95a6-4dc4-9750-878f77cee330",
-                            ConcurrencyStamp = "c554e7eb-00f4-4a5a-b057-d3361941fd66",
-                            Name = "Employee",
-                            NormalizedName = "EMPLOYEE"
-                        },
-                        new
-                        {
-                            Id = "d332a88b-0e24-42ec-8381-b2baad72711f",
-                            ConcurrencyStamp = "19e3fc0b-b8b2-4fa0-a80a-332f53e79b52",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "99ece520-c03b-44c3-8582-2bd5f86077b1",
-                            ConcurrencyStamp = "589c6007-6b9e-4b0f-af8d-af8225ff6963",
-                            Name = "Accountant",
-                            NormalizedName = "ACCOUNTANT"
-                        },
-                        new
-                        {
-                            Id = "2c7982dd-f43c-4052-9626-54a4b314c390",
-                            ConcurrencyStamp = "0fbf2f17-9c04-4137-971c-f8c3f0e4de98",
-                            Name = "Human Resource",
-                            NormalizedName = "HUMAN RESOURCE"
-                        },
-                        new
-                        {
-                            Id = "ed623b08-59a0-4576-8016-d02d5ad205dc",
-                            ConcurrencyStamp = "7be8c96c-a0a0-440e-806c-cb62e869c3c1",
-                            Name = "Warehouse staff",
-                            NormalizedName = "WAREHOUSE STAFF"
-                        },
-                        new
-                        {
-                            Id = "9df256c3-2865-41d0-80e2-8865d4b77e62",
-                            ConcurrencyStamp = "99c4c3bf-98a9-4fc3-8fe0-2266931854d1",
-                            Name = "Business Manager",
-                            NormalizedName = "BUSINESS MANAGER"
-                        },
-                        new
-                        {
-                            Id = "2119d1c1-d4ea-4259-8b35-f1449e5378f6",
-                            ConcurrencyStamp = "0e40e5d8-7589-4d39-8ebe-a12073f44fea",
-                            Name = "Data Analyst",
-                            NormalizedName = "DATA ANALYST"
-                        },
-                        new
-                        {
-                            Id = "07878695-a7c5-4552-8537-b171d38e9e27",
-                            ConcurrencyStamp = "3c3d3c9a-48d5-42a6-9b28-47130b573495",
-                            Name = "Khanhdepzai",
-                            NormalizedName = "KHANHDEPZAI"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -294,6 +317,34 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("API.Models.Form", b =>
+                {
+                    b.HasOne("API.Models.FormType", "FormType")
+                        .WithMany("Forms")
+                        .HasForeignKey("FormTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("API.DTO.CustomUser", "CustomUser")
+                        .WithMany("Forms")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CustomUser");
+
+                    b.Navigation("FormType");
+                });
+
+            modelBuilder.Entity("API.Models.Salary", b =>
+                {
+                    b.HasOne("API.DTO.CustomUser", "CustomUser")
+                        .WithMany("Salaries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -343,6 +394,18 @@ namespace API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.DTO.CustomUser", b =>
+                {
+                    b.Navigation("Forms");
+
+                    b.Navigation("Salaries");
+                });
+
+            modelBuilder.Entity("API.Models.FormType", b =>
+                {
+                    b.Navigation("Forms");
                 });
 #pragma warning restore 612, 618
         }

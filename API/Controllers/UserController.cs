@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR)]
+   // [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR)]
     public class UserController : ControllerBase
     {
         private readonly ILogger <UserController> _logger;
