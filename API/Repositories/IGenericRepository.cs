@@ -21,9 +21,8 @@ namespace API.Repositories
 
         Task<CustomUser> GetEntityByName(string username);
         Task<List<FormDTO>> GetUserFormsAsync(string userId, int? formTypeId);
-
-        Task<SalaryDTO?> GetSalaryByUser(string userId);
-        Task<List<SalaryDTO>> GetAllSalariesAsync();
+        Task<double> CalculateMonthlySalaryRepo(string userId, int month, int year);
+        Task<List<Form>> GetFormsByUserIdAndTypeAsync(string userId, int formTypeId, int month, int year);
 
     }
 }

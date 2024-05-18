@@ -13,40 +13,11 @@ namespace API.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<List<SalaryDTO>> GetAllSalaries()
+        public async Task<double> CalculateMonthlySalaryAsync(string userId, int month, int year)
         {
-            var result = await _unitOfWork.Salaries.GetAllSalariesAsync();
-            await _unitOfWork.CompleteAsync();
-            return result;
-        }
-
-        public async Task<SalaryDTO?> GetSalaryByUserId(string id)
-        {
-            var salary = await _unitOfWork.Salaries.GetSalaryByUser(id);
+            var salary = await _unitOfWork.Salaries.CalculateMonthlySalaryRepo(userId, month, year);
             await _unitOfWork.CompleteAsync();
             return salary;
-            
-        }
-
-        public async Task<SalaryDTO> CreateSalary(SalaryDTO salaryDto)
-        {
-            await _unitOfWork.Salaries.AddEntity(salaryDto);
-            await _unitOfWork.CompleteAsync();
-            return salaryDto;
-        }
-
-        public Task<SalaryDTO> UpdateSalary(SalaryDTO salaryDto)
-        { 
-            var result = _unitOfWork.Salaries.UpdateEntity(salaryDto);
-            _unitOfWork.CompleteAsync();
-            return result;
-        }
-
-        public Task<bool> DeleteSalary(string id)
-        {
-            var result = _unitOfWork.Salaries.DeleteEntity(id);
-            _unitOfWork.CompleteAsync();
-            return result;
         }
     }
 }
