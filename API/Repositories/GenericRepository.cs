@@ -106,9 +106,7 @@ namespace API.Repositories
 
         public async Task<List<FormDTO>> GetUserFormsAsync(string userId, int? formTypeId)
         {
-            IQueryable<Form> query = _context.Forms
-                                               .Include(f => f.FormType)
-                                               .Include(f => f.CustomUser);
+            IQueryable<Form> query = _context.Forms.Include(f => f.FormType).Include(f => f.CustomUser);
 
             if (!string.IsNullOrWhiteSpace(userId))
             {
@@ -134,22 +132,58 @@ namespace API.Repositories
                 UserId = f.UserId
             }).ToList();
         }
-
-        public Task<SalaryDTO?> GetSalaryByUser(string userId)
+        public async Task<SalaryDTO?> GetSalaryByUser(string userId)
         {
-            return (Task<SalaryDTO?>)_context.Salaries.Where(s => s.UserId == userId);
-        }
+            var salary = await _context.Salaries
+                                       .Where(s => s.UserId == userId)
+                                       .FirstOrDefaultAsync();
 
-        public async Task<List<SalaryDTO>> GetAllSalariesAsync()
-        {
-            var salaries = await _context.Salaries.ToListAsync();
-            return salaries.Select(s => new SalaryDTO
+            if (salary == null)
             {
-                Id = s.Id,
-                FixedAmount = s.FixedAmount,
-                UserId = s.UserId
-            }).ToList();
+                return null;
+            }
+
+            return new SalaryDTO
+            {
+                Id = salary.Id,
+                FixedAmount = salary.FixedAmount,
+                UserId = salary.UserId,
+                // Add other properties if needed
+            };
         }
 
+        public async Task<List<Form>> GetFormsByUserIdAndTypeAsync(string userId, int formTypeId, int month, int year)
+        {
+            return await _context.Forms
+                .Where(f => f.UserId == userId &&
+                            f.FormTypeId == formTypeId &&
+                            f.CreatedDate.Year == year &&
+                            f.CreatedDate.Month == month)
+                .ToListAsync();
+        }
+
+        public async Task<double> CalculateMonthlySalaryRepo(string userId, int month, int year)
+        {
+            var salary = await GetSalaryByUser(userId);
+            if (salary == null)
+            {
+                throw new KeyNotFoundException("Salary not found for the specified user");
+            }
+
+            var fixedAmount = salary.FixedAmount ?? 0;
+
+            var totalDaysInMonth = DateTime.DaysInMonth(year, month);
+            var leaveForms = await GetFormsByUserIdAndTypeAsync(userId, 1, month, year);
+            int? numberOfLeaves = 0;
+            foreach (var form in leaveForms)
+            {
+                numberOfLeaves += form.DayQuantity;
+            }
+            //var numberOfLeaves = leaveForms.Count();
+            var workingDays = totalDaysInMonth - numberOfLeaves;
+
+            var monthlySalary = fixedAmount * workingDays;
+            return (double)monthlySalary;
+        }
     }
 }

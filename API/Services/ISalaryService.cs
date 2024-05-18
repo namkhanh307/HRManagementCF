@@ -4,10 +4,7 @@ namespace API.Services
 {
     public interface ISalaryService
     {
-        Task<List<SalaryDTO>> GetAllSalaries();
-        Task<SalaryDTO> GetSalaryByUserId(string id);
-        Task<SalaryDTO> CreateSalary(SalaryDTO salaryDto);
-        Task<SalaryDTO> UpdateSalary(SalaryDTO salaryDto);
-        Task<bool> DeleteSalary(string id);
+        Task<double> CalculateMonthlySalaryAsync(string userId, int month, int year);
+
     }
 }

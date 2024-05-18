@@ -31,6 +31,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllRoles")]
+        [Authorize(Policy = "ApiAccess:getAllRoles")]
         public ActionResult GetAllRoles()
         {
             var roles = _roleManager.Roles.ToList();
@@ -38,6 +39,7 @@ namespace API.Controllers
         }
 
         [HttpPut("updateRole")]
+        [Authorize(Policy = "ApiAccess:updateRole")]
         public async Task<ActionResult> UpdateRole([FromBody] string username, string roleName)
         {
             //var result = await _userService.ModifyRole(username, roleName);
