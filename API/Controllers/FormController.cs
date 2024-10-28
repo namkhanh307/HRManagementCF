@@ -1,8 +1,6 @@
 ﻿using API.DTO;
-using API.Helpers;
 using API.Models;
 using API.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +22,6 @@ namespace API.Controllers
         }
 
         [HttpPost("submitForm")]
-        [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.HR + "," + LocalRoles.Accountant + "," + LocalRoles.BA + "," + LocalRoles.Employee + "," + LocalRoles.Manager)]
         public async Task<IActionResult> SubmitForm([FromForm] SubmitFormDTO submitformDto)
         {
             if (submitformDto.FileUpload == null || submitformDto.FileUpload.Length == 0)
@@ -43,7 +40,6 @@ namespace API.Controllers
             }
         }
         [HttpGet("getUserForms")]
-        [Authorize(Roles = LocalRoles.Admin + "," + LocalRoles.Manager)]
         public async Task<IActionResult> GetUserForms(string userId, int formTypeId)
         {
             if (string.IsNullOrWhiteSpace(userId))

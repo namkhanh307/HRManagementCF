@@ -17,7 +17,11 @@
         public const string addRole = "addRole";
         public const string updateRole = "updateRole";
         //salaryController
-        public const string calculateMonthlySalary = "calculateMonthlySalary";
+        public const string getAllSalaries = "getAllSalaries";
+        public const string getSalaryByUserId = "getSalaryByUserId";
+        public const string addSalary = "addSalary";
+        public const string updateSalary = "updateSalary";
+        public const string deleteSalary = "deleteSalary";
         //userController
         public const string getAllUsers = "getAllUsers";
         public const string getUserByUserName = "getUserByUserName";

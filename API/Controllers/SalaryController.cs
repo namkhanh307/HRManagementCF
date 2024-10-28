@@ -1,7 +1,5 @@
 ﻿using API.DTO;
-using API.Helpers;
 using API.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +7,6 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = LocalRoles.Accountant)]
     public class SalaryController : ControllerBase
     {
         private readonly ISalaryService _salaryService;
@@ -19,22 +16,46 @@ namespace API.Controllers
             _salaryService = salaryService;
         }
 
-        [HttpGet("calculateMonthlySalary")]
-        public async Task<IActionResult> CalculateMonthlySalary(string userId, int month, int year)
+        [HttpGet("getAllSalaries")]
+        public async Task<IActionResult> GetAllSalaries()
         {
-            try
-            {
-                var monthlySalary = await _salaryService.CalculateMonthlySalaryAsync(userId, month, year);
-                var response = new SalaryCalculationDTO
-                {
-                    MonthlySalary = monthlySalary
-                };
-                return Ok(response);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound("Salary or forms not found for the specified user");
-            }
+            var salaries = await _salaryService.GetAllSalaries();
+            return Ok(salaries);
+        }
+
+        [HttpGet("getSalaryByUserId")]
+        public async Task<IActionResult> GetSalaryByUserId(string userId)
+        {
+            var salary = await _salaryService.GetSalaryByUserId(userId);
+            if (salary == null) return NotFound();
+            return Ok(salary);
+        }
+
+        [HttpPost("addSalary")]
+        public async Task<IActionResult> AddSalary([FromBody] SalaryDTO salaryDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var createdSalary = await _salaryService.CreateSalary(salaryDto);
+            return CreatedAtAction(nameof(GetSalaryByUserId), new { id = createdSalary.Id }, createdSalary);
+        }
+
+        [HttpPut("updateSalary")]
+        public async Task<IActionResult> UpdateSalary([FromBody] SalaryDTO salaryDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _salaryService.UpdateSalary(salaryDto);
+            if (result != null) return NotFound();
+            return NoContent();
+        }
+
+        [HttpDelete("deleteSalary")]
+        public async Task<IActionResult> DeleteSalary(string id)
+        {
+            var result = await _salaryService.DeleteSalary(id);
+            if (!result) return NotFound();
+            return NoContent();
         }
     }
 }
